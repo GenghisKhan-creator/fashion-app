@@ -105,14 +105,23 @@ const ProductCard = ({ product, large = false }) => {
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40 lg:opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none group-hover:pointer-events-auto">
+                    {/* Desktop Button */}
                     <button 
                         onClick={handleAdd}
-                        className="bg-white text-black px-6 py-3 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center space-x-2 translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-accent"
+                        className="hidden lg:flex bg-white text-black px-6 py-3 rounded-sm text-[10px] font-bold uppercase tracking-widest items-center space-x-2 translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-accent"
                     >
                         <Plus size={14} /> <span>Quick Add</span>
                     </button>
                 </div>
+
+                {/* Mobile Button - Always Visible */}
+                <button 
+                    onClick={handleAdd}
+                    className="lg:hidden absolute bottom-3 right-3 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center shadow-lg border border-white/10 z-10 active:scale-90 transition-transform"
+                >
+                    <Plus size={18} />
+                </button>
             </div>
             <div onClick={handleNavigate}>
                 <p className="text-[10px] font-bold tracking-[0.2em] mb-1">{product.name}</p>
