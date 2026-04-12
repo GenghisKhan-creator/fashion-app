@@ -2,10 +2,12 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { ArrowLeft, Shield, Truck, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [selectedSize, setSelectedSize] = useState('M');
+    const { addToCart } = useCart();
 
     // Dummy data
     const product = {
@@ -68,7 +70,12 @@ const ProductDetail = () => {
                     </div>
 
                     <div className="space-y-4 mb-12">
-                        <button className="btn-primary w-full">Add to Bag</button>
+                        <button 
+                            onClick={() => addToCart({ ...product, size: selectedSize })}
+                            className="btn-primary w-full"
+                        >
+                            Add to Bag
+                        </button>
                         <button className="w-full py-3 border border-white/20 text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-all">
                             Wishlist
                         </button>

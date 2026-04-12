@@ -20,7 +20,7 @@ const Footer = () => {
             <div className="grid grid-cols-12 w-full gap-12 z-10">
                 <div className="col-span-12 lg:col-span-4 self-end">
                     <Link to="/" className="text-3xl font-bold tracking-tighter mb-8 block">
-                        FRN<span className="text-accent">™</span>
+                        MAX<span className="text-accent">™</span>
                     </Link>
                     <p className="text-[10px] tracking-widest text-white/40 uppercase mb-8 max-w-[300px] leading-loose">
                         ENGINEERING URBAN GEAR FOR THE EXTREME. NOT JUST CLOTHING, BUT A RESPONSE TO THE CONCRETE JUNGLE.
@@ -40,7 +40,7 @@ const Footer = () => {
                         <div className="flex w-full lg:w-auto">
                             <input
                                 type="email"
-                                placeholder="OPERATOR EMAIL"
+                                placeholder="YOUR EMAIL"
                                 className="bg-white/5 border border-white/10 px-4 py-2 text-[10px] tracking-widest focus:outline-none focus:border-accent w-full lg:w-64"
                             />
                             <button className="bg-white text-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-white/80 transition-colors">
@@ -57,7 +57,7 @@ const Footer = () => {
                         </h3>
                         <div className="flex items-center space-x-6">
                             <span className="text-[8px] font-mono text-white/30 uppercase tracking-[0.3em]">
-                                ©2026 FRN WEAR. ALL RIGHTS RESERVED.
+                                ©2026 Max Collection. ALL RIGHTS RESERVED.
                             </span>
                             <button
                                 onClick={scrollToTop}

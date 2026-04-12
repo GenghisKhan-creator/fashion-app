@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import Toast from '../components/Toast';
 
 const CartContext = createContext();
 
@@ -7,6 +8,7 @@ export const CartProvider = ({ children }) => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
+    const [toasts, setToasts] = useState([]);
 
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -22,6 +24,14 @@ export const CartProvider = ({ children }) => {
             }
             return [...prev, { ...product, qty: 1 }];
         });
+
+        // Add feedback toast
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, message: `${product.name} Added to Bag` }]);
+    };
+
+    const removeToast = (id) => {
+        setToasts(prev => prev.filter(toast => toast.id !== id));
     };
 
     const removeFromCart = (productId) => {
@@ -40,13 +50,26 @@ export const CartProvider = ({ children }) => {
 
     const cartCount = cart.reduce((acc, item) => acc + item.qty, 0);
     const cartTotal = cart.reduce((acc, item) => {
-        const price = parseFloat(item.price.replace(/[^0-9.-]+/g, ""));
+        const price = typeof item.price === 'string' 
+            ? parseFloat(item.price.replace(/[^0-9.-]+/g, "")) 
+            : item.price;
         return acc + (price * item.qty);
     }, 0);
 
     return (
         <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQty, cartCount, cartTotal }}>
             {children}
+            
+            {/* Toast Container */}
+            <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end pointer-events-none">
+                {toasts.map(toast => (
+                    <Toast 
+                        key={toast.id} 
+                        message={toast.message} 
+                        onClose={() => removeToast(toast.id)} 
+                    />
+                ))}
+            </div>
         </CartContext.Provider>
     );
 };

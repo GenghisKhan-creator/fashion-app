@@ -1,18 +1,41 @@
 import { useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCart } from '../context/CartContext';
+import { ShoppingBag, Plus } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ProductCard = ({ product, large = false }) => {
     const cardRef = useRef(null);
     const { addToCart } = useCart();
+    const navigate = useNavigate();
 
     const handleAdd = (e) => {
         e.stopPropagation();
         addToCart(product);
-        gsap.to(cardRef.current, { scale: 0.98, duration: 0.1, yoyo: true, repeat: 1 });
+        
+        // Button animation feedback
+        gsap.to(e.currentTarget, { 
+            scale: 0.9, 
+            duration: 0.1, 
+            yoyo: true, 
+            repeat: 1, 
+            ease: "power2.inOut" 
+        });
+        
+        // Card subtle feedback
+        gsap.to(cardRef.current, { 
+            y: -5, 
+            duration: 0.2, 
+            yoyo: true, 
+            repeat: 1 
+        });
+    };
+
+    const handleNavigate = () => {
+        navigate(`/product/${product.id}`);
     };
 
     useEffect(() => {
@@ -40,17 +63,20 @@ const ProductCard = ({ product, large = false }) => {
         return (
             <div
                 ref={cardRef}
-                onClick={handleAdd}
+                onClick={handleNavigate}
                 className="relative group cursor-pointer overflow-hidden rounded-sm glass-card h-[500px] opacity-0"
             >
-                <div className="absolute top-8 left-8 z-10">
+                <div className="absolute top-8 left-8 z-20">
                     <h3 className="text-4xl font-bold">{product.name}<sup className="text-sm">™</sup></h3>
                     <div className="flex items-center space-x-4 mt-4">
-                        <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-[8px]">
-                            +
-                        </div>
+                        <button 
+                            onClick={handleAdd}
+                            className="w-12 h-12 rounded-full bg-accent text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-accent/20"
+                        >
+                            <ShoppingBag size={20} />
+                        </button>
                         <div className="text-[10px] tracking-widest text-white/50 uppercase">
-                            Add to cart<br />
+                            Add to Bag<br />
                             <span className="text-white text-base font-bold">{product.price}</span>
                         </div>
                     </div>
@@ -60,7 +86,7 @@ const ProductCard = ({ product, large = false }) => {
                     alt={product.name}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
             </div>
         );
     }
@@ -69,17 +95,26 @@ const ProductCard = ({ product, large = false }) => {
         <div
             ref={cardRef}
             className="group cursor-pointer opacity-0"
-            onClick={handleAdd}
         >
-            <div className="aspect-[3/4] glass-card rounded-sm overflow-hidden mb-4 relative">
+            <div 
+                className="aspect-[3/4] glass-card rounded-sm overflow-hidden mb-4 relative"
+                onClick={handleNavigate}
+            >
                 <img
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button 
+                        onClick={handleAdd}
+                        className="bg-white text-black px-6 py-3 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center space-x-2 translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-accent"
+                    >
+                        <Plus size={14} /> <span>Quick Add</span>
+                    </button>
+                </div>
             </div>
-            <div>
+            <div onClick={handleNavigate}>
                 <p className="text-[10px] font-bold tracking-[0.2em] mb-1">{product.name}</p>
                 <p className="text-[9px] text-white/40 uppercase tracking-widest mb-2 h-8 leading-tight">
                     {product.description}
