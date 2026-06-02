@@ -26,14 +26,14 @@ const ProductDetail = () => {
     };
 
     return (
-        <div className="pt-32 px-12 pb-24 min-h-screen">
+        <div className="pt-32 px-4 sm:px-8 md:px-12 pb-24 min-h-screen">
             <Link to="/shop" className="inline-flex items-center text-[10px] uppercase tracking-widest text-white/50 hover:text-white mb-12 transition-colors">
                 <ArrowLeft size={12} className="mr-2" /> Back to catalog
             </Link>
 
-            <div className="grid grid-cols-12 gap-16">
+            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-16">
                 {/* Gallery */}
-                <div className="col-span-12 lg:col-span-7 grid grid-cols-2 gap-4">
+                <div className="lg:col-span-7 grid grid-cols-2 gap-4">
                     <div className="col-span-2 aspect-[4/5] glass-card overflow-hidden">
                         <img src={product.image} className="w-full h-full object-cover" alt="" />
                     </div>
@@ -46,22 +46,22 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Info */}
-                <div className="col-span-12 lg:col-span-5 sticky top-32 h-fit">
+                <div className="lg:col-span-5 lg:sticky lg:top-32 h-fit">
                     <div className="mb-8">
                         <p className="text-[10px] tracking-[0.5em] text-accent uppercase mb-2">New Release</p>
-                        <h1 className="text-6xl font-bold mb-2 uppercase">{product.name}</h1>
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2 uppercase">{product.name}</h1>
                         <p className="text-xl text-white/60 mb-6 uppercase tracking-widest">{product.subName}</p>
                         <p className="text-3xl font-bold">{product.price}</p>
                     </div>
 
                     <div className="mb-12">
                         <p className="text-[10px] tracking-widest text-white/40 uppercase mb-4">Select Size</p>
-                        <div className="flex space-x-4">
+                        <div className="flex flex-wrap gap-3">
                             {['S', 'M', 'L', 'XL', 'XXL'].map(size => (
                                 <button
                                     key={size}
                                     onClick={() => setSelectedSize(size)}
-                                    className={`w-14 h-14 border flex items-center justify-center transition-all uppercase font-mono text-sm ${selectedSize === size ? 'border-white bg-white text-black' : 'border-white/20 text-white/50 hover:border-white'}`}
+                                    className={`w-12 h-12 sm:w-14 sm:h-14 border flex items-center justify-center transition-all uppercase font-mono text-sm ${selectedSize === size ? 'border-white bg-white text-black' : 'border-white/20 text-white/50 hover:border-white'}`}
                                 >
                                     {size}
                                 </button>
@@ -93,7 +93,7 @@ const ProductDetail = () => {
                             </ul>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4 pt-4">
+                        <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4">
                             <div className="text-center">
                                 <Shield size={20} className="mx-auto mb-2 text-white/30" />
                                 <p className="text-[8px] uppercase tracking-widest text-white/40">Lifetime<br />Guarantee</p>

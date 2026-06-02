@@ -25,7 +25,7 @@ const Contact = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="pt-32 px-4 sm:px-8 md:px-12 pb-24 min-h-screen bg-black">
+        <div ref={containerRef} className="pt-32 px-4 sm:px-8 md:px-12 pb-24 min-h-screen bg-black overflow-x-hidden">
             <header className="mb-24">
                 <p className="text-[10px] tracking-[0.5em] text-accent uppercase font-bold mb-4">Connect With Us</p>
                 <h1 className="text-5xl md:text-8xl font-bold tracking-tighter uppercase leading-[0.9]">
@@ -34,9 +34,9 @@ const Contact = () => {
                 </h1>
             </header>
 
-            <div className="grid grid-cols-12 gap-12 lg:gap-24">
+            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-24">
                 {/* Info */}
-                <div className="col-span-12 lg:col-span-5 space-y-16">
+                <div className="lg:col-span-5 space-y-16">
                     <div className="contact-info space-y-8">
                         <section>
                             <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-accent mb-6">Our Flagship</h3>
@@ -65,7 +65,7 @@ const Contact = () => {
                         </section>
                     </div>
 
-                    <div className="contact-info glass-card p-10 border-white/5 space-y-8">
+                    <div className="contact-info glass-card p-6 sm:p-10 border-white/5 space-y-8">
                         <h3 className="text-xl font-bold uppercase tracking-tighter">Customer Support</h3>
                         <p className="text-xs text-white/40 uppercase tracking-widest leading-relaxed">
                             Our support team is available from 09:00 to 18:00 GMT for all inquiries, order adjustments, and general assistance.
@@ -77,8 +77,8 @@ const Contact = () => {
                 </div>
 
                 {/* Form */}
-                <div className="contact-form col-span-12 lg:col-span-7">
-                    <div className="glass-card p-8 sm:p-12 border-white/5 relative bg-white/[0.01]">
+                <div className="contact-form lg:col-span-7">
+                    <div className="glass-card p-6 sm:p-12 border-white/5 relative bg-white/[0.01]">
                         <h2 className="text-2xl font-bold uppercase tracking-tighter mb-12">SEND A MESSAGE</h2>
                         <form className="space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
