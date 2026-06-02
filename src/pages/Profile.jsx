@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { User, Package, Settings, LogOut, ChevronRight, Activity, ShieldCheck, MapPin, Truck, Calendar, Key, Check } from 'lucide-react';
+import { User, Package, Settings, LogOut, ChevronRight, Activity, ShieldCheck, MapPin, Truck, Calendar, Key, Check, Heart } from 'lucide-react';
 import Toast from '../components/Toast';
+import { useWishlist } from '../context/WishlistContext';
+import ProductCard from '../components/ProductCard';
 
 const Profile = () => {
+    const { wishlist } = useWishlist();
+    
     // User profile state
     const [user, setUser] = useState({
         name: 'MAX USER 04',
@@ -117,6 +121,7 @@ const Profile = () => {
                     <nav className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 gap-2 border-b lg:border-b-0 border-white/5 scrollbar-none">
                         {[
                             { id: 'hub', icon: Activity, label: 'The Hub' },
+                            { id: 'wishlist', icon: Heart, label: 'My Favorites' },
                             { id: 'drops', icon: Package, label: 'Past Drops' },
                             { id: 'info', icon: Settings, label: 'Account Info' },
                             { id: 'signout', icon: LogOut, label: 'Sign Out', danger: true }
@@ -273,6 +278,32 @@ const Profile = () => {
                                     </tbody>
                                 </table>
                             </div>
+                        </section>
+                    )}
+
+                    {activeTab === 'wishlist' && (
+                        <section className="glass-card p-6 border-white/5 bg-white/[0.01] space-y-6">
+                            <div className="border-b border-white/5 pb-4">
+                                <h2 className="text-[10px] uppercase tracking-[0.3em] font-bold text-rose-500">My Favorites</h2>
+                                <p className="text-[8px] text-white/40 uppercase tracking-widest mt-1 font-mono">Your secured and copped gear wishlist</p>
+                            </div>
+                            
+                            {wishlist.length === 0 ? (
+                                <div className="text-center py-16 space-y-4">
+                                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-white/30">
+                                        <Heart size={20} />
+                                    </div>
+                                    <p className="text-[10px] uppercase tracking-widest text-white/40">No Gear Favorited Yet</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {wishlist.map(product => (
+                                        <div key={product.id} className="animate-fadeIn">
+                                            <ProductCard product={product} />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </section>
                     )}
 

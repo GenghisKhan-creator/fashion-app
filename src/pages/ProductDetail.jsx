@@ -3,27 +3,132 @@ import { useState } from 'react';
 import { ArrowLeft, Shield, Truck, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [selectedSize, setSelectedSize] = useState('M');
     const { addToCart } = useCart();
+    const { toggleWishlist, isInWishlist } = useWishlist();
 
-    // Dummy data
-    const product = {
-        id: 1,
-        name: 'AURORA SILVER',
-        subName: 'REFLECTIVE PUFFER JACKET',
-        price: '$999.00',
-        description: 'Designed for the highest peaks and coldest conditions. The Aurora Silver Puffer features our proprietary reflective membrane for high visibility and heat retention.',
-        details: [
-            'Water-repellent technical exterior',
-            'High-density synthetic down fill',
-            'Adjustable storm hood with toggle system',
-            'Micro-fleece lined utility pockets'
-        ],
-        image: '/puffer-white.png'
-    };
+    const allProducts = [
+        {
+            id: 1,
+            name: 'NEON GHOST',
+            subName: 'OVERSIZED REFLECTIVE HOODIE',
+            price: 'GH₵189.00',
+            description: 'Stand out in the dark. The Neon Ghost features an oversized fit constructed with fully reflective technical threads and a high-density water-resistant cotton blend.',
+            details: [
+                'Oversized drop-shoulder pattern',
+                'Reflective safety weave detailing',
+                'Reinforced double-layered hood',
+                'Kangaroo pocket with hidden zip compartment'
+            ],
+            image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 2,
+            name: 'APEX ONE',
+            subName: 'TECHNICAL STREET RUNNERS',
+            price: 'GH₵299.99',
+            description: 'Engineered for the ultimate urban explorer. These trainers combine futuristic aesthetics with maximum cushioning, grip, and durability.',
+            details: [
+                'Responsive ultra-foam midsole',
+                'Water-resistant ripstop knit upper',
+                'Quick-lace speed toggle system',
+                'High-traction rubber outsole tread'
+            ],
+            image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 3,
+            name: 'CHRONOS V4',
+            subName: 'STEALTH MATTE WATCH',
+            price: 'GH₵450.00',
+            description: 'A masterpiece of sleek timekeeping. The Chronos V4 features a matte black titanium case and custom tech straps for a tactical, lightweight look.',
+            details: [
+                'Scratch-resistant sapphire crystal lens',
+                'Tactical matte black titanium alloy casing',
+                'Waterproof depth rating up to 50M',
+                'Luminous stealth hands and markers'
+            ],
+            image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 4,
+            name: 'MIDNIGHT SHADE',
+            subName: 'POLARIZED CYBER FRAME',
+            price: 'GH₵120.00',
+            description: 'Deflect glare with cybernetic poise. Designed with polarized lenses and a futuristic semi-rimless construction.',
+            details: [
+                'UV400 polarized optical protection',
+                'Ultra-lightweight alloy framing',
+                'Shatterproof polycarbonate lens',
+                'Adjustable silicone nose grip pads'
+            ],
+            image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 5,
+            name: 'VECTOR SOCKS',
+            subName: 'COMPRESSION URBAN SOCKS',
+            price: 'GH₵35.00',
+            description: 'Step into structural comfort. Built with advanced compression technology to keep you moving comfortably throughout long street missions.',
+            details: [
+                'Targeted arch compression bands',
+                'Moisture-wicking mesh ventilation zones',
+                'Cushioned impact heel and toe boxes',
+                'Anti-friction flat toe seams'
+            ],
+            image: 'https://images.unsplash.com/photo-1582966236302-5d95f4abb28d?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 6,
+            name: 'CARGO X',
+            subName: 'MODULAR TECH PANTS',
+            price: 'GH₵220.00',
+            description: 'The ultimate utility trousers. Featuring water-repellent nylon canvas, multi-pocket modular storage, and ankle adjustment toggles.',
+            details: [
+                'Abrasion-resistant heavy nylon fabric',
+                'Detachable side utility pockets',
+                'Articulated knee pleats for movement',
+                'Elastic drawcords at cuffs'
+            ],
+            image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 7,
+            name: 'ORBIT BEANIE',
+            subName: 'THERMAL LOGO BEANIE',
+            price: 'GH₵45.00',
+            description: 'Lock in heat. A high-performance double-knit thermal watch cap detailed with our signature reflective micro-patch.',
+            details: [
+                'Double-layer thermal heat retention',
+                'Soft itch-free acrylic blend knit',
+                'Classic folded cuff silhouette',
+                'Reflective brand micro-label'
+            ],
+            image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&q=80&w=800'
+        },
+        {
+            id: 8,
+            name: 'TITAN BELT',
+            subName: 'TACTICAL QUICK-RELEASE',
+            price: 'GH₵85.00',
+            description: 'Instant locking utility. The Titan features a heavy-duty quick-release buckle mounted onto a high-tensile nylon webbing strap.',
+            details: [
+                'Zinc-alloy quick-release buckle',
+                'High-tensile heavy nylon canvas webbing',
+                'Fully adjustable slide-to-lock sizing',
+                'Low-profile matte black hardware'
+            ],
+            image: 'https://images.unsplash.com/photo-1624222247344-550fb8ec5054?auto=format&fit=crop&q=80&w=800'
+        }
+    ];
+
+    const foundProduct = allProducts.find(p => p.id === parseInt(id));
+    const product = foundProduct || allProducts[0];
+    const isFav = isInWishlist(product.id);
 
     return (
         <div className="pt-32 px-4 sm:px-8 md:px-12 pb-24 min-h-screen">
@@ -35,13 +140,13 @@ const ProductDetail = () => {
                 {/* Gallery */}
                 <div className="lg:col-span-7 grid grid-cols-2 gap-4">
                     <div className="col-span-2 aspect-[4/5] glass-card overflow-hidden">
-                        <img src={product.image} className="w-full h-full object-cover" alt="" />
+                        <img src={product.image} className="w-full h-full object-cover hover:scale-102 transition-transform duration-500" alt={product.name} />
                     </div>
                     <div className="aspect-square glass-card overflow-hidden">
-                        <img src="/puffer-blue.png" className="w-full h-full object-cover" alt="" />
+                        <img src={product.image} className="w-full h-full object-cover grayscale brightness-50 hover:brightness-90 transition-all duration-500" alt="" />
                     </div>
                     <div className="aspect-square glass-card overflow-hidden">
-                        <img src="/puffer-black.png" className="w-full h-full object-cover" alt="" />
+                        <img src={product.image} className="w-full h-full object-cover sepia brightness-50 hover:brightness-90 transition-all duration-500" alt="" />
                     </div>
                 </div>
 
@@ -76,8 +181,16 @@ const ProductDetail = () => {
                         >
                             Add to Bag
                         </button>
-                        <button className="w-full py-3 border border-white/20 text-[10px] font-bold uppercase tracking-widest hover:bg-white/5 transition-all">
-                            Wishlist
+                        <button 
+                            onClick={() => toggleWishlist(product)}
+                            className={`w-full py-3 border text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center space-x-2 ${
+                                isFav 
+                                    ? 'border-rose-500 bg-rose-950/20 text-rose-500 hover:bg-rose-950/30' 
+                                    : 'border-white/20 text-white hover:bg-white/5 hover:border-white'
+                            }`}
+                        >
+                            <span>{isFav ? 'WISHLISTED' : 'ADD TO WISHLIST'}</span>
+                            <span className="text-xs">{isFav ? '♥' : '♡'}</span>
                         </button>
                     </div>
 
